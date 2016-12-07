@@ -1,6 +1,9 @@
 'use strict';
 
-var generators = require('yeoman-generator');
+var generators = require('yeoman-generator'),
+    _ = require('lodash'),
+    chalk = require('chalk'),
+    yosay = require('yosay');
 
 module.exports = generators.Base.extend({
 
@@ -12,6 +15,7 @@ module.exports = generators.Base.extend({
     },
 
     prompting: function () {
+        this.log(yosay('Welcome to ' + chalk.yellow('YANG (Yet Another Angular)') + ' generator!'));
     },
 
     configuring: function () {
