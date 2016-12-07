@@ -30,6 +30,20 @@ module.exports = generators.Base.extend({
             this.log('---------------------------------------');
         },
 
+        gulpfile: function(){
+            this.copy('_gulpfile.js', 'gulpfile.js');
+            this.copy('_gulp.config.js', 'gulp.config.js');
+            this.copy('jshintrc', '.jshintrc');
+        },
+
+        packageJSON: function(){
+            this.copy('_package.json', 'package.json');
+        },
+
+        git: function(){
+            this.copy('gitignore', '.gitignore');
+        },
+
         bower: function(){
             var bowerJson = {
                 name: 'my-app', // TODO: make dynamic
@@ -44,6 +58,8 @@ module.exports = generators.Base.extend({
             bowerJson.dependencies['moment'] = '~2.10.6';
             bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
             this.fs.writeJSON('bower.json', bowerJson);
+
+            this.copy('bowerrc', '.bowerrc');
         },
 
         appStaticFiles: function () {
