@@ -30,6 +30,22 @@ module.exports = generators.Base.extend({
             this.log('---------------------------------------');
         },
 
+        bower: function(){
+            var bowerJson = {
+                name: 'my-app', // TODO: make dynamic
+                license: 'MIT',
+                dependencies: {}
+            };
+            bowerJson.dependencies['angular'] = '~1.4.6';
+            bowerJson.dependencies['angular-bootstrap'] = '~0.13.4';
+            bowerJson.dependencies['angular-ui-router'] = '~0.2.15';
+            bowerJson.dependencies['bootstrap-css-only'] = '~3.3.5';
+            bowerJson.dependencies['lodash'] = '~3.10.1';
+            bowerJson.dependencies['moment'] = '~2.10.6';
+            bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
+            this.fs.writeJSON('bower.json', bowerJson);
+        },
+
         appStaticFiles: function () {
             this.copy('_favicon.ico', 'src/favicon.ico');
             this.directory('styles', 'src/styles');
