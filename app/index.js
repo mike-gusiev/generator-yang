@@ -27,14 +27,39 @@ module.exports = generators.Base.extend({
         this.log(yosay('Welcome to ' + chalk.yellow('YANG (Yet Another Angular)') + ' generator!'));
 
         var done = this.async();
-        this.prompt({
+        this.prompt([{
             type: 'input',
             name: 'ngappname',
             message: 'Angular App Name (ng-app)',
             default: 'app'
-        }).then(function (answers) {
+        },
+            {
+                type: 'checkbox',
+                name: 'jslibs',
+                message: 'Which JS libraries would you like to include?',
+                choices: [
+                    {
+                        name: 'lodash',
+                        value: 'lodash',
+                        checked: true
+                    },
+                    {
+                        name: 'Moment.js',
+                        value: 'momentjs',
+                        checked: true
+                    },
+                    {
+                        name: 'Angular-UI Utils',
+                        value: 'angularuiutils',
+                        checked: true
+                    }
+                ]
+            }]).then(function(answers){
             this.log(answers);
             this.ngappname = answers.ngappname;
+            this.includeLodash = _.includes(answers.jslibs, 'lodash');
+            this.includeMoment = _.includes(answers.jslibs, 'momentjs');
+            this.includeAngularUIUtils = _.includes(answers.jslibs, 'angularuiutils');
             done();
         }.bind(this));
     },
@@ -79,9 +104,13 @@ module.exports = generators.Base.extend({
             bowerJson.dependencies['angular-bootstrap'] = '~0.13.4';
             bowerJson.dependencies['angular-ui-router'] = '~0.2.15';
             bowerJson.dependencies['bootstrap-css-only'] = '~3.3.5';
-            bowerJson.dependencies['lodash'] = '~3.10.1';
-            bowerJson.dependencies['moment'] = '~2.10.6';
-            if (this.options.includeutils) {
+            if (this.includeLodash){
+                bowerJson.dependencies['lodash'] = '~3.10.1';
+            }
+            if (this.includeMoment){
+                bowerJson.dependencies['moment'] = '~2.10.6';
+            }
+            if (this.options.includeutils || this.includeAngularUIUtils){
                 bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
             }
             this.fs.writeJSON('bower.json', bowerJson);
