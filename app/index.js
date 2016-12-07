@@ -25,6 +25,18 @@ module.exports = generators.Base.extend({
 
     prompting: function () {
         this.log(yosay('Welcome to ' + chalk.yellow('YANG (Yet Another Angular)') + ' generator!'));
+
+        var done = this.async();
+        this.prompt({
+            type: 'input',
+            name: 'ngappname',
+            message: 'Angular App Name (ng-app)',
+            default: 'app'
+        }).then(function (answers) {
+            this.log(answers);
+            this.ngappname = answers.ngappname;
+            done();
+        }.bind(this));
     },
 
     configuring: function () {
@@ -87,27 +99,27 @@ module.exports = generators.Base.extend({
                 this.templatePath('app/_app.js'),
                 this.destinationPath('src/app/app.js'),
                 {
-                    ngapp: 'myapp'
+                    ngapp: this.ngappname
                 }
             );
             this.fs.copyTpl(
                 this.templatePath('app/layout/_shell.controller.js'),
                 this.destinationPath('src/app/layout/shell.controller.js'),
                 {
-                    ngapp: 'myapp'
+                    ngapp: this.ngappname
             });
             this.fs.copyTpl(
                 this.templatePath('app/home/_home.controller.js'),
                 this.destinationPath('src/app/home/home.controller.js'),
                 {
-                    ngapp: 'myapp'
+                    ngapp: this.ngappname
                 }
             );
             this.fs.copyTpl(
                 this.templatePath('app/about/_about.controller.js'),
                 this.destinationPath('src/app/about/about.controller.js'),
                 {
-                    ngapp: 'myapp'
+                    ngapp: this.ngappname
                 }
             );
         },
@@ -118,7 +130,7 @@ module.exports = generators.Base.extend({
                 this.destinationPath('src/index.html'),
                 {
                     appname: _.startCase(this.appname),
-                    ngapp: 'myapp'
+                    ngapp: this.ngappname
                 }
             );
             this.fs.copy(
