@@ -9,9 +9,15 @@ module.exports = generators.Base.extend({
 
     constructor: function () {
         generators.Base.apply(this, arguments);
+
         this.argument('appname', { type: String, required: true });
         this.appname = _.kebabCase(this.appname);
-        this.log('appname (arg):', this.appname);
+
+        this.option('includeutils', {
+            desc: 'Optionally includes Angular-UI Utils library',
+            type: Boolean,
+            default: false
+        });
     },
 
     initializing: function () {
@@ -63,7 +69,9 @@ module.exports = generators.Base.extend({
             bowerJson.dependencies['bootstrap-css-only'] = '~3.3.5';
             bowerJson.dependencies['lodash'] = '~3.10.1';
             bowerJson.dependencies['moment'] = '~2.10.6';
-            bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
+            if (this.options.includeutils) {
+                bowerJson.dependencies['angular-ui-utils'] = '~3.0.0';
+            }
             this.fs.writeJSON('bower.json', bowerJson);
 
             this.copy('bowerrc', '.bowerrc');
