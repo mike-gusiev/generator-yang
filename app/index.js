@@ -9,6 +9,9 @@ module.exports = generators.Base.extend({
 
     constructor: function () {
         generators.Base.apply(this, arguments);
+        this.argument('appname', { type: String, required: true });
+        this.appname = _.kebabCase(this.appname);
+        this.log('appname (arg):', this.appname);
     },
 
     initializing: function () {
@@ -50,7 +53,7 @@ module.exports = generators.Base.extend({
 
         bower: function(){
             var bowerJson = {
-                name: 'my-app', // TODO: make dynamic
+                name: this.appname,
                 license: 'MIT',
                 dependencies: {}
             };
@@ -106,7 +109,7 @@ module.exports = generators.Base.extend({
                 this.templatePath('_index.html'),
                 this.destinationPath('src/index.html'),
                 {
-                    appname: 'My Cool App',
+                    appname: _.startCase(this.appname),
                     ngapp: 'myapp'
                 }
             );
