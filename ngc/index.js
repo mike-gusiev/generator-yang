@@ -12,14 +12,24 @@ module.exports = generators.Base.extend({
     },
 
     writing: function () {
+        var fileNameFragment = getFileNameFragment(this.name);
+
         this.fs.copyTpl(
             this.templatePath('ng-controller.js'),
-            this.destinationPath('src/app/' + this.name + '/' + this.name + '.controller.js'),
+            this.destinationPath('src/app/' + fileNameFragment + '/' + fileNameFragment + '.controller.js'),
             {
                 ctrlName: this.name,
                 appName: this.config.get('ngappname')
             }
         );
+
+        function getFileNameFragment(ctrlName) {
+            var ctrlIndex = ctrlName.indexOf('Ctrl');
+            if (ctrlIndex === (ctrlName.length - 4)) {
+                ctrlName = ctrlName.substring(0, ctrlIndex);
+            }
+            return _.kebabCase(ctrlName);
+        }
     }
 
 });
