@@ -9,6 +9,12 @@ module.exports = generators.Base.extend({
         generators.Base.apply(this, arguments);
         this.argument('name', { type: String, required: true });
         console.log('inside ngc sub-generator', this.name);
+
+        this.option('view', {
+            desc: 'Determines if view is created along with controller',
+            type: Boolean,
+            default: false
+        });
     },
 
     writing: function () {
@@ -22,6 +28,15 @@ module.exports = generators.Base.extend({
                 appName: this.config.get('ngappname')
             }
         );
+
+        if (this.options.view) {
+            this.fs.copyTpl(
+                this.templatePath('ng-view.html'),
+                this.destinationPath('src/app/' + fileNameFragment + '/' + fileNameFragment + '.html'),
+                {
+                    name: this.name
+                });
+        }
 
         function getFileNameFragment(ctrlName) {
             var ctrlIndex = ctrlName.indexOf('Ctrl');
