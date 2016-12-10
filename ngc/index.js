@@ -12,7 +12,14 @@ module.exports = generators.Base.extend({
     },
 
     writing: function () {
-
+        this.fs.copyTpl(
+            this.templatePath('ng-controller.js'),
+            this.destinationPath('src/app/' + this.name + '/' + this.name + '.controller.js'),
+            {
+                ctrlName: this.name,
+                appName: this.config.get('ngappname')
+            }
+        );
     }
 
 });
