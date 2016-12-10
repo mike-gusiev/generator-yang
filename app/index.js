@@ -184,9 +184,26 @@ module.exports = generators.Base.extend({
     },
 
     install: function () {
+        // this.bowerInstall();
+        // this.npmInstall();
+        this.installDependencies({
+            skipInstall: this.options['skip-install']
+        });
     },
 
     end: function () {
+        this.log(chalk.yellow.bold('Installation successful!'));
+
+        var howToInstall =
+            '\nAfter running ' + chalk.yellow.bold('npm install & bower install') +
+            ', inject your front end dependencies by running ' +
+            chalk.yellow.bold('gulp wiredep') +
+            '.';
+
+        if (this.options['skip-install']) {
+            this.log(howToInstall);
+            return;
+        }
     }
 
 });
