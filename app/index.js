@@ -31,7 +31,8 @@ module.exports = generators.Base.extend({
             type: 'input',
             name: 'ngappname',
             message: 'Angular App Name (ng-app)',
-            default: 'app'
+            default: this.config.get('ngappname') || 'app'
+            // store: true
         },
             {
                 type: 'checkbox',
@@ -56,7 +57,8 @@ module.exports = generators.Base.extend({
                 ]
             }]).then(function(answers){
             this.log(answers);
-            this.ngappname = answers.ngappname;
+            this.config.set('ngappname', answers.ngappname);
+            this.config.save();
             this.includeLodash = _.includes(answers.jslibs, 'lodash');
             this.includeMoment = _.includes(answers.jslibs, 'momentjs');
             this.includeAngularUIUtils = _.includes(answers.jslibs, 'angularuiutils');
@@ -128,27 +130,27 @@ module.exports = generators.Base.extend({
                 this.templatePath('app/_app.js'),
                 this.destinationPath('src/app/app.js'),
                 {
-                    ngapp: this.ngappname
+                    ngapp: this.config.get('ngappname')
                 }
             );
             this.fs.copyTpl(
                 this.templatePath('app/layout/_shell.controller.js'),
                 this.destinationPath('src/app/layout/shell.controller.js'),
                 {
-                    ngapp: this.ngappname
+                    ngapp: this.config.get('ngappname')
             });
             this.fs.copyTpl(
                 this.templatePath('app/home/_home.controller.js'),
                 this.destinationPath('src/app/home/home.controller.js'),
                 {
-                    ngapp: this.ngappname
+                    ngapp: this.config.get('ngappname')
                 }
             );
             this.fs.copyTpl(
                 this.templatePath('app/about/_about.controller.js'),
                 this.destinationPath('src/app/about/about.controller.js'),
                 {
-                    ngapp: this.ngappname
+                    ngapp: this.config.get('ngappname')
                 }
             );
         },
@@ -159,7 +161,7 @@ module.exports = generators.Base.extend({
                 this.destinationPath('src/index.html'),
                 {
                     appname: _.startCase(this.appname),
-                    ngapp: this.ngappname
+                    ngapp: this.config.get('ngappname')
                 }
             );
             this.fs.copy(
