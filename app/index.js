@@ -93,7 +93,16 @@ module.exports = generators.Base.extend({
         },
 
         git: function(){
-            this.copy('gitignore', '.gitignore');
+            // this.copy('gitignore', '.gitignore');
+            this.composeWith('common', {
+                options: {
+                    'skip-messages': true,
+                    gitignore: true,
+                    gitattributes: true,
+                    jshintrc: false,
+                    'test-jshintrc': false
+                }
+            });
         },
 
         bower: function(){
