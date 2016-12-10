@@ -102,6 +102,8 @@ module.exports = generators.Base.extend({
                     jshintrc: false,
                     'test-jshintrc': false
                 }
+            }, {
+                local: require.resolve('generator-common')
             });
         },
 
