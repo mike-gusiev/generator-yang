@@ -33,4 +33,21 @@ describe('yang:app', function (){
         });
     });
 
+    describe('ngapp prompt', function(){
+        before(function(done){
+            helpers.run(path.join(__dirname, '../app'))
+                .withArguments(['MyCoolApp'])
+                .withOptions({ skipInstall: true })
+                .withPrompts({ ngappname: 'fooBarApp' })
+                .on('end', done);
+        });
+
+        it('injects custom ngappname', function(){
+            assert.fileContent('src/app/app.js', /angular.module\('fooBarApp'/);
+            assert.fileContent('src/index.html', /<html ng-app="fooBarApp">/);
+            assert.fileContent('src/app/home/home.controller.js', /angular.module\('fooBarApp'\).controller\('HomeCtrl', HomeCtrl\);/);
+
+        });
+    });
+
 });
