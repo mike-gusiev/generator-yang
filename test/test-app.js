@@ -27,6 +27,10 @@ describe('yang:app', function (){
                 'gulpfile.js'
             ])
         });
+
+        it('adds default ngapp', function(){
+            assert.fileContent('src/app/app.js', /angular.module\('app'/);
+        });
     });
 
 });
